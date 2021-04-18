@@ -1,0 +1,108 @@
+:root {
+    --blue-primary: rgb(6, 136, 237);
+}
+
+body {
+    padding: 50px 0;
+    background-image: url("../assets/whiteBackground.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputs-container {
+    direction: rtl;
+    padding: 50px 0;
+    /* background: green; */
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputs-container .form-group {
+    /* background: blue; */
+    width: 90vw;
+    max-width: 500px;
+    flex-grow: 1;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 5px;
+}
+
+.inputs-container .form-group label,
+.inputs-container .form-group input[type="number"] {
+    width: 50%;
+    text-align: center;
+}
+
+.inputs-container .form-group input {
+    padding: 10px 5px;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    flex-grow: 1;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+.result {
+    margin-top: 25px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 3px 3px 30px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid var(--blue-primary);
+}
+
+.result div {
+    /* background: yellow; */
+    border-bottom: 2px solid #ddd;
+    width: 90vw;
+    max-width: 500px;
+    display: flex;
+    flex-direction: row nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 5px;
+}
+
+.result div:last-child {
+    border-bottom: none;
+}
+
+.result div p {
+    width: 50%;
+}
+
+.result div p:nth-child(1) {
+    text-align: center;
+}
+
+.result div p:nth-child(2) {
+    text-align: center;
+}
+
+.sreenBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    background: var(--blue-primary);
+    color: white;
+    font-size: 20px;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+}
