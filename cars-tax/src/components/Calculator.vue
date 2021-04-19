@@ -4,15 +4,15 @@
    <div class="inputs-container wow fadeIn" id="capture">
         <div class="form-group" > 
             <label for="car-price">سعر السيارة</label>
-            <input id="car-price" type="number" placeholder="0"  v-model="price" />
+            <input  id="car-price" type="number" placeholder="0"  v-model="price" />
         </div>
          <div class="form-group"> 
             <label for="car-down-payment-value">قيمة المقدم</label>
-            <input id="car-down-payment-value" type="number" placeholder="0"  v-model="downpaymentValue" :disabled="price==0"/>
+            <input  id="car-down-payment-value" type="number" placeholder="0"  v-model="downpaymentValue" :disabled="price==0"/>
         </div>
         <div class="form-group"> 
             <label for="car-down-payment-percent">نسبة المقدم</label>
-            <input id="car-down-payment-percent" type="number" placeholder="0"  v-model="downpaymentPercent" :disabled="price==0"/>
+            <input  id="car-down-payment-percent" type="number" placeholder="0"  v-model="downpaymentPercent" :disabled="price==0"/>
         </div>
         <div class="form-group"  data-html2canvas-ignore="true"> 
             <label for="car-down-payment-percent">نسبة الفائدة</label>
@@ -39,7 +39,7 @@
             </div>
         </div>
    </div>
-    <button class="sreenBtn" @click="printAction()"  data-html2canvas-ignore="true"><i class="fa fa-camera-retro"/></button>
+    <button class="sreenBtn" @click="takeScreenShot"  data-html2canvas-ignore="true"><i class="fa fa-camera-retro"/></button>
 </template>
 
 <script>
@@ -70,16 +70,15 @@ export default {
     });
     },
     methods:{
+        // focusEvent(e){
+        //     e.target.type="number"
+        // },blurEvent(e){
+        //       e.target.type="text"
+        // },
         shortFormat(number){
             return Number(Number(number).toFixed(2))
         },
-         getFormatedValue(number){
-            return  new Intl.NumberFormat("en-IN").format(number)
-        },
-        getNumberValue(FormatterString){
-            return  Number(FormatterString.replace(/,/g,""));
-        },
-        printAction(){
+        takeScreenShot(){
             if(this.price>0){
             swal("Type Image Name:", {
                 content: "input",
@@ -139,9 +138,8 @@ export default {
             if(this.shortFormat(this.percentWithoutFormat)!=newValue){
                 this.percentWithoutFormat=newValue
             }
-
             if(this.price>0){
-                this.downpaymentValue=this.shortFormat((this.percentWithoutFormat/100)*this.price);
+                this.downpaymentValue=this.shortFormat((this.percentWithoutFormat/100)*this.price)
             }else{
                 this.downpaymentValue=0
             }
@@ -149,18 +147,18 @@ export default {
     },
     computed:{
         remain(){
-            return this.getFormatedValue(this.shortFormat(this.price-this.downpaymentValue))
+            return this.shortFormat(this.shortFormat(this.price-this.downpaymentValue))
         },
         masreefEdaria(){
-            return this.getFormatedValue(this.getNumberValue(this.remain)*0.025)
+            return this.shortFormat((this.remain)*0.025)
         },
         taminat(){
-            return this.getFormatedValue(this.price*0.025) 
+            return this.shortFormat(this.price*0.025) 
         }
         ,taxPerYear(){
             return numOfYear=> {
                 const additions=numOfYear>5?(numOfYear-5)+this.additions:this.additions;
-                return this.getFormatedValue(this.shortFormat(((((numOfYear*additions)/100)*this.getNumberValue(this.remain))+this.getNumberValue(this.remain))/(numOfYear*12)))
+                return this.shortFormat(this.shortFormat(((((numOfYear*additions)/100)*(this.remain))+(this.remain))/(numOfYear*12)))
             }
         }
 
