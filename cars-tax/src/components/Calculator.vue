@@ -8,15 +8,15 @@
         </div>
          <div class="form-group"> 
             <label for="car-down-payment-value">قيمة المقدم</label>
-            <input  id="car-down-payment-value" type="number" placeholder="0"  v-model="downpaymentValue" :disabled="price==0"/>
+            <input  id="car-down-payment-value" :type="isAndroid? 'tel':'number'" placeholder="0"  v-model="downpaymentValue" :readonly="price==0"/>
         </div>
         <div class="form-group"> 
             <label for="car-down-payment-percent">نسبة المقدم</label>
-            <input  id="car-down-payment-percent" type="number" placeholder="0"  v-model="downpaymentPercent" :disabled="price==0"/>
+            <input  id="car-down-payment-percent" :type="isAndroid? 'tel':'number'" placeholder="0"  v-model="downpaymentPercent" :readonly="price==0"/>
         </div>
         <div class="form-group"  data-html2canvas-ignore="true"> 
             <label for="car-down-payment-percent">نسبة الفائدة</label>
-            <input id="car-down-payment-percent" type="number" placeholder="0"  v-model="additions" :disabled="price==0"/>
+            <input id="car-down-payment-percent" type="number" placeholder="0"  v-model="additions" :readonly="price==0"/>
         </div>
         <div :class="{result:true, wow:true ,fadeInDown:true}" v-if="price>0">
             <div>
@@ -61,6 +61,7 @@ export default {
                 downpaymentPercent:"", 
                 additions:"",
                 percentWithoutFormat:"", 
+                isAndroid:/Android/i.test(navigator.userAgent)
                         }
     },
     created(){
@@ -70,11 +71,6 @@ export default {
     });
     },
     methods:{
-        // focusEvent(e){
-        //     e.target.type="number"
-        // },blurEvent(e){
-        //       e.target.type="text"
-        // },
         shortFormat(number){
             return Number(Number(number).toFixed(2))
         },
@@ -88,7 +84,7 @@ export default {
                          window.scrollTo(0,0);
                            html2canvas(document.getElementById("capture")).then( async canvas => {
                    
-                     if (/Android/i.test(navigator.userAgent)) {
+                     if (this.isAndroid) {
                     // .... Android ....
                     const { Filesystem } = Plugins;
                      await Filesystem.writeFile({
