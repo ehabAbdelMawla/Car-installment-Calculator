@@ -25,7 +25,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".splash"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
             android:label="@string/title_activity_main"
             android:launchMode="singleTask"
@@ -46,7 +46,6 @@
             </intent-filter>
         </activity>
 
-        <activity  android:name=".MainActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
