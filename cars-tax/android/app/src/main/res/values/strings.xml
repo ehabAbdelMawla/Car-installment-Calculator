@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">car-tax</string>
-    <string name="title_activity_main">car-tax</string>
+    <string name="app_name">Loan Calculator</string>
+    <string name="title_activity_main">Loan Calculator</string>
     <string name="package_name">com.carscalc.app</string>
     <string name="custom_url_scheme">com.carscalc.app</string>
 </resources>

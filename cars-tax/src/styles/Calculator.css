@@ -25,7 +25,7 @@ input {
   display: flex;
   flex-flow: row wrap;
   gap: 50px;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: flex-start;
   background: white;
 }

@@ -38,10 +38,7 @@
         />
       </div>
     </article>
-    <div
-      :class="{ result: true, wow: true, fadeInDown: true }"
-      v-if="price > 0"
-    >
+    <div :class="{ result: true, wow: true, fadeInDown: true }">
       <div>
         <p>قيمة التمويل</p>
         <p>{{ remain }}</p>
@@ -55,10 +52,7 @@
         <p>{{ taminat }}</p>
       </div>
     </div>
-    <div
-      :class="{ result: true, wow: true, fadeInDown: true }"
-      v-if="price > 0"
-    >
+    <div :class="{ result: true, wow: true, fadeInDown: true }">
       <div v-for="num in 7" :key="num">
         <p>{{ getYearsSuffix(num) }}</p>
         <p>{{ taxPerYear(num) }}</p>
@@ -78,9 +72,9 @@
 import "../styles/Calculator.css";
 import html2canvas from "html2canvas";
 import swal from "sweetalert";
-import { Plugins, FilesystemDirectory } from "@capacitor/core";
+import { Filesystem, Directory } from "@capacitor/filesystem";
 import Header from "./Header.vue";
-
+import { App } from "@capacitor/app";
 export default {
   name: "Calculator",
   components: {
@@ -98,7 +92,6 @@ export default {
   },
   created() {
     document.addEventListener("backbutton", async function() {
-      const { App } = Plugins;
       App.exitApp();
     });
   },
@@ -120,11 +113,11 @@ export default {
               async (canvas) => {
                 if (this.isAndroid) {
                   // .... Android ....
-                  const { Filesystem } = Plugins;
+
                   await Filesystem.writeFile({
                     path: value == "" ? `${Date.now()}.png` : `${value}.png`,
                     data: canvas.toDataURL(),
-                    directory: FilesystemDirectory.Documents,
+                    directory: Directory.Documents,
                   });
                 } else {
                   //    .... Web ....
