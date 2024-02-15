@@ -1,15 +1,8 @@
 {
-    "appId": "com.cars.calc",
-    "appName": "Calc",
-    "bundledWebRuntime": false,
-    "npmClient": "npm",
-    "webDir": "dist",
-    "linuxAndroidStudioPath": "/home/ehab/Downloads/android-studio-ide-192.6392135-linux/android-studio/bin/studio.sh",
-
-    "plugins": {
-        "SplashScreen": {
-            "launchShowDuration": 0
-        }
-    },
-    "cordova": {}
+  "appId": "com.carscalc.app",
+  "appName": "car-tax",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
 }
