@@ -173,7 +173,9 @@ export default {
             data: btoa(pdf),
             directory: Directory.Documents,
           });
-          swal("Saved");
+          swal("PDF Saved.", {
+            icon: "success",
+          });
         } else {
           html2pdf()
             .from(element)
