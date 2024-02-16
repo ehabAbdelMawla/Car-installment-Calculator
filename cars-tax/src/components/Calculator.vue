@@ -152,7 +152,8 @@ export default {
     },
     async printToPdf() {
       if (this.price > 0) {
-        const fileName = await this.getFileName("Type PDF Name:");
+        let fileName = await this.getFileName("Type PDF Name:");
+        fileName = fileName ? fileName + ".pdf" : "file.pdf";
         const element = document.getElementById("capture");
         const options = {
           margin: 1.5,
