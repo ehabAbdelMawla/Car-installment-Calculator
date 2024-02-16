@@ -17,6 +17,7 @@
         "@capacitor/filesystem": "^5.2.1",
         "core-js": "^3.6.5",
         "html2canvas": "*",
+        "html2pdf.js": "^0.10.1",
         "sweetalert": "^2.1.2",
         "vue": "^3.0.0"
     },

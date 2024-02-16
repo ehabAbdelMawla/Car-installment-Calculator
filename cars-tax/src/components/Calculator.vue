@@ -38,7 +38,13 @@
         />
       </div>
     </article>
-    <div :class="{ result: true, wow: true, fadeInDown: true }">
+    <div
+      :class="{
+        result: true,
+        wow: true,
+        fadeInDown: true,
+      }"
+    >
       <div>
         <p>قيمة التمويل</p>
         <p>{{ remain }}</p>
@@ -52,13 +58,23 @@
         <p>{{ taminat }}</p>
       </div>
     </div>
-    <div :class="{ result: true, wow: true, fadeInDown: true }">
+    <div
+      :class="{
+        result: true,
+        wow: true,
+        fadeInDown: true,
+      }"
+      id="breakAfter"
+    >
       <div v-for="num in 7" :key="num">
         <p>{{ getYearsSuffix(num) }}</p>
         <p>{{ taxPerYear(num) }}</p>
       </div>
     </div>
   </div>
+  <button class="printBtn" @click="printToPdf" data-html2canvas-ignore="true">
+    <i class="fa fa-file-pdf" />
+  </button>
   <button
     class="sreenBtn"
     @click="takeScreenShot"
@@ -71,6 +87,7 @@
 <script>
 import "../styles/Calculator.css";
 import html2canvas from "html2canvas";
+import html2pdf from "html2pdf.js";
 import swal from "sweetalert";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import Header from "./Header.vue";
@@ -102,40 +119,69 @@ export default {
     getYearsSuffix(num) {
       return num == 1 ? "سنة" : num == 2 ? "سنتين" : num + " سنين";
     },
-    takeScreenShot() {
+    getFileName(message) {
+      return swal(message, {
+        content: "input",
+      });
+    },
+    async takeScreenShot() {
       if (this.price > 0) {
-        swal("Type Image Name:", {
-          content: "input",
-        }).then((value) => {
-          if (value || value == "") {
-            window.scrollTo(0, 0);
-            html2canvas(document.getElementById("capture")).then(
-              async (canvas) => {
-                if (this.isAndroid) {
-                  // .... Android ....
+        const fileName = await this.getFileName("Type Image Name:");
 
-                  await Filesystem.writeFile({
-                    path: value == "" ? `${Date.now()}.png` : `${value}.png`,
-                    data: canvas.toDataURL(),
-                    directory: Directory.Documents,
-                  });
-                } else {
-                  //    .... Web ....
-                  const aTag = document.createElement("a");
-                  aTag.setAttribute("href", canvas.toDataURL());
-                  aTag.setAttribute(
-                    "download",
-                    value == "" ? "image.png" : value
-                  );
-                  aTag.click();
-                }
-                swal("Image Saved.", {
-                  icon: "success",
-                });
-              }
-            );
+        window.scrollTo(0, 0);
+        html2canvas(document.getElementById("capture")).then(async (canvas) => {
+          if (this.isAndroid) {
+            // .... Android ....
+            await Filesystem.writeFile({
+              path: fileName ? `${fileName}.png` : `${Date.now()}.png`,
+              data: canvas.toDataURL(),
+              directory: Directory.Documents,
+            });
+          } else {
+            //    .... Web ....
+            const aTag = document.createElement("a");
+            aTag.setAttribute("href", canvas.toDataURL());
+            aTag.setAttribute("download", fileName ? fileName : "image.png");
+            aTag.click();
           }
+          swal("Image Saved.", {
+            icon: "success",
+          });
         });
+      }
+    },
+    async printToPdf() {
+      if (this.price > 0) {
+        const fileName = await this.getFileName("Type PDF Name:");
+        const element = document.getElementById("capture");
+        const options = {
+          margin: 1.5,
+          html2canvas: { scale: 2 },
+          filename: fileName,
+          jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+        };
+
+        if (this.isAndroid) {
+          const pdf = await html2pdf()
+            .from(element)
+            .set(options)
+            .toPdf()
+            .outputPdf();
+
+          await Filesystem.writeFile({
+            path: fileName,
+            data: btoa(pdf),
+            directory: Directory.Documents,
+          });
+          swal("Saved");
+        } else {
+          html2pdf()
+            .from(element)
+            .set(options)
+            .toPdf()
+            .outputPdf()
+            .save();
+        }
       }
     },
   },

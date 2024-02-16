@@ -94,7 +94,8 @@ input {
   text-align: center;
 }
 
-.sreenBtn {
+.sreenBtn,
+.printBtn {
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -113,6 +114,10 @@ input {
   right: 15px;
 }
 
+.printBtn {
+  bottom: 80px;
+}
+
 /* Force Dark Mode  */
 
 /* @media (prefers-color-scheme: dark) {
@@ -120,3 +125,10 @@ input {
     color: black;
   }
 } */
+
+@media print {
+  #breakAfter {
+    page-break-before: avoid;
+    border: 5px solid red;
+  }
+}

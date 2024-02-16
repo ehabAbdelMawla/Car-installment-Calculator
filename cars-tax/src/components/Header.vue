@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img src="../assets/jeep.gif" alt="Wheel Icon" />
+    <img src="../assets/jeep.gif" alt="Wheel Icon" class="no-print" />
   </header>
 </template>
 
