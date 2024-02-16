@@ -125,10 +125,3 @@ input {
     color: black;
   }
 } */
-
-@media print {
-  #breakAfter {
-    page-break-before: avoid;
-    border: 5px solid red;
-  }
-}
