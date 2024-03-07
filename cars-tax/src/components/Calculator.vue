@@ -14,6 +14,7 @@
           :type="isAndroid ? 'tel' : 'number'"
           placeholder="0"
           v-model="downpaymentValue"
+          @input="handleChangeDownpaymentValue($event.target.value)"
           :readonly="price == 0"
         />
       </div>
@@ -24,6 +25,7 @@
           :type="isAndroid ? 'tel' : 'number'"
           placeholder="0"
           v-model="downpaymentPercent"
+          @input="handleChangeDownpaymentPercentage($event.target.value)"
           :readonly="price == 0"
         />
       </div>
@@ -113,8 +115,28 @@ export default {
     });
   },
   methods: {
+    handleChangeDownpaymentValue(value) {
+      if (this.price > 0) {
+        this.percentWithoutFormat = (value / this.price) * 100;
+        this.downpaymentPercent = this.shortFormat(this.percentWithoutFormat);
+      } else {
+        this.downpaymentPercent = 0;
+      }
+      return value;
+    },
+    handleChangeDownpaymentPercentage(value) {
+      this.percentWithoutFormat = value;
+      if (this.price > 0) {
+        this.downpaymentValue = this.shortFormat(
+          (this.percentWithoutFormat / 100) * this.price
+        );
+      } else {
+        this.downpaymentValue = 0;
+      }
+      return value;
+    },
     shortFormat(number) {
-      return Math.ceil(Number(number));
+      return Number(number).toFixed(2);
     },
     getYearsSuffix(num) {
       return num == 1 ? "سنة" : num == 2 ? "سنتين" : num + " سنين";
@@ -201,45 +223,24 @@ export default {
         }
       }
     },
-    downpaymentValue(newValue) {
-      if (this.price > 0) {
-        this.percentWithoutFormat = (newValue / this.price) * 100;
-        this.downpaymentPercent = this.shortFormat(this.percentWithoutFormat);
-      } else {
-        this.downpaymentPercent = 0;
-      }
-    },
-    downpaymentPercent(newValue) {
-      if (this.shortFormat(this.percentWithoutFormat) != newValue) {
-        this.percentWithoutFormat = newValue;
-      }
-      if (this.price > 0) {
-        this.downpaymentValue = this.shortFormat(
-          (this.percentWithoutFormat / 100) * this.price
-        );
-      } else {
-        this.downpaymentValue = 0;
-      }
-    },
   },
   computed: {
     remain() {
-      return this.shortFormat(
-        this.shortFormat(this.price - this.downpaymentValue)
-      );
+      return Math.ceil(this.shortFormat(this.price - this.downpaymentValue));
     },
     masreefEdaria() {
-      return this.shortFormat(this.remain * 0.0249);
+      return Math.ceil(this.shortFormat(this.remain * 0.0249));
     },
     taminat() {
-      return this.shortFormat(this.price * 0.025);
+      return Math.ceil(this.shortFormat(this.price * 0.025));
     },
     taxPerYear() {
       return (numOfYear) => {
         const additions = Number(this.additions);
-        return this.shortFormat(
+        const remain = Number(this.remain);
+        return Math.ceil(
           this.shortFormat(
-            (((numOfYear * additions) / 100) * this.remain + this.remain) /
+            (((numOfYear * additions) / 100) * remain + remain) /
               (numOfYear * 12)
           )
         );
